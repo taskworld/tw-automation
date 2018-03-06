@@ -14,4 +14,4 @@ async function run () {
   await client.createMessageForChannel(channelId, spaceId, reportString)
 }
 
-run()
+run().catch(err => console.log(err))

@@ -5,7 +5,7 @@ const T = require('tcomb')
 function getReportForPullRequests (prs) {
   return prs.reduce((acc, pr) => {
     if (logic.isPrObsolte(pr)) {
-      acc += `* Pull requests: ${pr.title} \r\n`
+      acc += `* Pull requests: [${pr.title}](${pr.url}) \r\n`
     }
     return acc
   }, '')

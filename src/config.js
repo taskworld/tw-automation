@@ -5,7 +5,9 @@ const config = {
   TASKWORLD_PASSWORD: process.env.TASKWORLD_PASSWORD,
   GITHUB_TOKEN: process.env.GITHUB_TOKEN,
   TASKWORLD_SPACE_ID: process.env.TASKWORLD_SPACE_ID,
-  TASKWORLD_CHANNEL_ID: process.env.TASKWORLD_CHANNEL_ID
+  TASKWORLD_CHANNEL_ID: process.env.TASKWORLD_CHANNEL_ID,
+
+  TASKWORLD_API_URL: process.env.TASKWORLD_API_URL || 'https://api.taskworld.com'
 }
 
 assert(config.TASKWORLD_USERNAME, 'Require TASKWORLD_USERNAME env')
