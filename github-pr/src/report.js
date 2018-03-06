@@ -3,9 +3,24 @@ const logic = require('./logic')
 const T = require('tcomb')
 const _ = require('lodash')
 
-function getReportForPullRequests (prs) {
+function getObsoleteReportForPullRequests (prs, repoName) {
+  const title = `### Today I will closed these obsolete pull request for repository **${repoName}**: \r\n`
   const obsoltePrs = prs.filter(c => logic.isPrObsolte(c))
-  return obsoltePrs.reduce((acc, pr) => {
+  if (obsoltePrs.length === 0) return ''
+  return title + obsoltePrs.reduce((acc, pr) => {
+    acc += `* Pull requests: [${pr.title}](${pr.html_url}) \r\n`
+    return acc
+  }, '')
+}
+
+function getWarningReportForPullRequests (prs, repoName) {
+  const title = `### These pull requests in repo **${repoName}** have not been updated for sometimes. Let's try merge these PRs to master!! \r\n`
+  const warningPrs = prs.filter(c => {
+    const warningLevel = logic.getPrWarningLevel(c).level
+    return warningLevel >= 2 && warningLevel <= 3
+  })
+  if (warningPrs.length === 0) return ''
+  return title + warningPrs.reduce((acc, pr) => {
     acc += `* Pull requests: [${pr.title}](${pr.html_url}) \r\n`
     return acc
   }, '')
@@ -26,8 +41,8 @@ function getObsoletePrs (allPullRequests) {
 
 function getReportFromPRs (allPullRequests) {
   return allPullRequests.reduce((acc, repo) => {
-    acc += `## Today I will closed these obsolete pull request for repository ${repo.repoName}: \r\n`
-    acc += getReportForPullRequests(repo.data)
+    acc += getObsoleteReportForPullRequests(repo.data, repo.repoName)
+    acc += getWarningReportForPullRequests(repo.data, repo.repoName)
     return acc
   }, '')
 }

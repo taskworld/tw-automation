@@ -18,7 +18,7 @@ function setupGithub ({ token, organization, listRepos } = { }) {
       owner: 'taskworld',
       number: prNumber,
       repo: repoName,
-      body: 'hello',
+      body: message,
       event: 'COMMENT'
     })
   }
