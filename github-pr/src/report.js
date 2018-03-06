@@ -17,7 +17,7 @@ function getWarningReportForPullRequests (prs, repoName) {
   const title = `### These pull requests in repo **${repoName}** have not been updated for sometimes. Let's try merge these PRs to master!! \r\n`
   const warningPrs = prs.filter(c => {
     const warningLevel = logic.getPrWarningLevel(c).level
-    return warningLevel >= 2 && warningLevel <= 3
+    return warningLevel >= 1 && warningLevel <= 3
   })
   if (warningPrs.length === 0) return ''
   return title + warningPrs.reduce((acc, pr) => {
