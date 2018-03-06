@@ -8,8 +8,8 @@ This bot will:
 
 ## Structure
 
-github.js ---> Deal with Github API
-taskworld.js ---> Deal with Taskworld API
-logic.js ---> All logic explanation (and test)
-report.js ---> Create nice message to paste in chat
-cli/run.js ---> Main runner
+- github.js ---> Deal with Github API
+- taskworld.js ---> Deal with Taskworld API
+- logic.js ---> All logic explanation (and test)
+- report.js ---> Create nice message to paste in chat
+- cli/run.js ---> Main runner
