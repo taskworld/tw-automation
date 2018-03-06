@@ -13,10 +13,12 @@ async function run () {
     password: Config.TASKWORLD_PASSWORD
   })
   await client.createMessageForChannel(channelId, spaceId, reportData.report)
+  if (reportData.pullRequests.length > 10) {
+    await client.createMessageForChannel(channelId, spaceId, `**There are ${reportData.pullRequests.length} old pull requests. I would encorage us to do fewer things at a time. Let me close all outdated work and call it a day.**`)
+  }
   const githubClient = GithubClient.getClient()
   for (let pr of reportData.pullRequests) {
-    console.log(`Will closed pull request: ${pr.title}`)
-    // githubClient.closePullRequest()
+    await githubClient.closePullRequest(pr.number, pr.repoName, 'TEST-RUN: This PRs is closed because it is too old.')
   }
 }
 

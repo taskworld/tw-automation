@@ -5,7 +5,6 @@ async function getAuthenticatedTaskworldClient ({ username, password, rootUrl = 
   const accessToken = authen.data.access_token
   return {
     async createMessageForChannel (channelId, spaceId, message) {
-      console.log(message)
       const response = await axios.post(`${rootUrl}/v1/message.create`, {
         'access_token': accessToken,
         'space_id': spaceId,
