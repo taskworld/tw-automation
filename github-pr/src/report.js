@@ -1,6 +1,7 @@
-const gh = require('./github')
+const githubClient = require('./githubClient')
 const logic = require('./logic')
 const T = require('tcomb')
+const _ = require('lodash')
 
 function getReportForPullRequests (prs) {
   return prs.reduce((acc, pr) => {
@@ -11,21 +12,22 @@ function getReportForPullRequests (prs) {
   }, '')
 }
 
-async function getReport (githubToken) {
+async function getReportAndObsoletePRs (githubToken) {
   T.String(githubToken)
-  const githubConnector = gh({
-    token: githubToken,
-    organization: 'taskworld'
-  })
+  const githubConnector = githubClient.getClient()
   const res = await githubConnector.getAllPullRequests()
   const report = res.reduce((acc, repo) => {
-    acc += `## Obsolete pull request for repository ${repo.repoName}: \r\n`
+    acc += `## Today I will closed these obsolete pull request for repository ${repo.repoName}: \r\n`
     acc += getReportForPullRequests(repo.data)
     return acc
   }, '')
-  return report
+  const obsoletePrs = _.flatMap(res, r => r.data).filter(r => logic.isPrObsolte(r))
+  return {
+    report,
+    pullRequests: obsoletePrs
+  }
 }
 
 module.exports = {
-  getReport
+  getReportAndObsoletePRs
 }

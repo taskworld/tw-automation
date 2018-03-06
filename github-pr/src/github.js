@@ -13,7 +13,16 @@ function setupGithub ({ token, organization, listRepos } = { }) {
     type: 'token',
     token
   })
-  return {
+  const createComment = async (prNumber, repoName, message) => {
+    return octokit.pullRequests.createReview({
+      owner: 'taskworld',
+      number: prNumber,
+      repo: repoName,
+      body: 'hello',
+      event: 'COMMENT'
+    })
+  }
+  const obj = {
     async getAllPullRequests () {
       return Promise.map(listRepos, async repo => {
         const githubResponse = await octokit.pullRequests.getAll({
@@ -31,8 +40,18 @@ function setupGithub ({ token, organization, listRepos } = { }) {
         number: prNumber,
         repo
       })
+    },
+    async closePullRequest (prNumber, repoName, message) {
+      await createComment(prNumber, repoName, message)
+      return octokit.pullRequests.update({
+        owner: 'taskworld',
+        number: prNumber,
+        repo: repoName,
+        state: 'closed'
+      })
     }
   }
+  return obj
 }
 
 module.exports = setupGithub
