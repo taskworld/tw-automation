@@ -8,7 +8,7 @@ function getObsoleteReportForPullRequests (prs, repoName) {
   const obsoltePrs = prs.filter(c => logic.isPrObsolte(c))
   if (obsoltePrs.length === 0) return ''
   return title + obsoltePrs.reduce((acc, pr) => {
-    acc += `* Pull requests: [${pr.title}](${pr.html_url}) \r\n`
+    acc += `* Pull requests: [${pr.title}](${pr.html_url}) by ${pr.user.login} \r\n`
     return acc
   }, '')
 }
@@ -21,7 +21,7 @@ function getWarningReportForPullRequests (prs, repoName) {
   })
   if (warningPrs.length === 0) return ''
   return title + warningPrs.reduce((acc, pr) => {
-    acc += `* Pull requests: [${pr.title}](${pr.html_url}) \r\n`
+    acc += `* Pull requests: [${pr.title}](${pr.html_url}) by ${pr.user.login} \r\n`
     return acc
   }, '')
 }
