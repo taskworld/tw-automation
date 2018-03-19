@@ -4,24 +4,24 @@ const T = require('tcomb')
 const _ = require('lodash')
 
 function getObsoleteReportForPullRequests (prs, repoName) {
-  const title = `### Today I will closed these obsolete pull request for repository **${repoName}**: \r\n`
+  const title = `These pull request for repository **${repoName}** is outdated and will be closed: \r\n`
   const obsoltePrs = prs.filter(c => logic.isPrObsolte(c))
   if (obsoltePrs.length === 0) return ''
   return title + obsoltePrs.reduce((acc, pr) => {
-    acc += `* Pull requests: [${pr.title}](${pr.html_url}) by ${pr.user.login} \r\n`
+    acc += `* [${pr.title}](${pr.html_url}) by ${pr.user.login} \r\n`
     return acc
   }, '')
 }
 
 function getWarningReportForPullRequests (prs, repoName) {
-  const title = `### These pull requests in repo **${repoName}** have not been updated for sometimes. Let's try merge these PRs to master!! \r\n`
+  const title = `**${repoName}** have not been updated for sometimes, and will outdated soon. \r\n`
   const warningPrs = prs.filter(c => {
     const warningLevel = logic.getPrWarningLevel(c).level
     return warningLevel >= 1 && warningLevel <= 3
   })
   if (warningPrs.length === 0) return ''
   return title + warningPrs.reduce((acc, pr) => {
-    acc += `* Pull requests: [${pr.title}](${pr.html_url}) by ${pr.user.login} \r\n`
+    acc += `* [${pr.title}](${pr.html_url}) by ${pr.user.login} \r\n`
     return acc
   }, '')
 }
