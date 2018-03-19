@@ -4,7 +4,7 @@ const T = require('tcomb')
 const _ = require('lodash')
 
 function getObsoleteReportForPullRequests (prs, repoName) {
-  const title = `These pull request for repository **${repoName}** is outdated and will be closed: \r\n`
+  const title = `These PRs in **${repoName}** is outdated and will be closed: \r\n`
   const obsoltePrs = prs.filter(c => logic.isPrObsolte(c))
   if (obsoltePrs.length === 0) return ''
   return title + obsoltePrs.reduce((acc, pr) => {
@@ -14,7 +14,7 @@ function getObsoleteReportForPullRequests (prs, repoName) {
 }
 
 function getWarningReportForPullRequests (prs, repoName) {
-  const title = `**${repoName}** have not been updated for sometimes, and will outdated soon. \r\n`
+  const title = `These PRs in **${repoName}** have not been updated for sometimes, and will be outdated soon. \r\n`
   const warningPrs = prs.filter(c => {
     const warningLevel = logic.getPrWarningLevel(c).level
     return warningLevel >= 1 && warningLevel <= 3
@@ -41,7 +41,7 @@ function getObsoletePrs (allPullRequests) {
 
 function getReportFromPRs (allPullRequests) {
   return allPullRequests.reduce((acc, repo) => {
-    acc += getObsoleteReportForPullRequests(repo.data, repo.repoName)
+    acc += getObsoleteReportForPullRequests(repo.data, repo.repoName) + '\r\n'
     acc += getWarningReportForPullRequests(repo.data, repo.repoName)
     return acc
   }, '')
